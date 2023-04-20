@@ -1,0 +1,36 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    
+    <aura:attribute name="accountList" type="List"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+        <thead>
+            <tr class="slds-text-title--caps">
+                <th scope="col">
+                    <div class="slds-truncate" title="Account Name">Account Name</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Created Date">Created Date</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.accountList}" var="acc">
+                <tr>
+                    <td data-label="Account Name">
+                        <div class="slds-truncate" title="{!acc.Name}">
+                            <a href="{!'/'+acc.Id}">{!acc.Name}</a>
+                        </div>
+                    </td>
+                    <td data-label="Created Date">
+                        <div class="slds-truncate" title="{!acc.CreatedDate}">
+                            {!acc.CreatedDate}
+                        </div>
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+    
+</aura:component>
