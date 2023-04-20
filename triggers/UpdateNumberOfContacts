@@ -1,0 +1,26 @@
+trigger UpdateNumberOfContacts on Contact (after insert, after update, after delete, after undelete) {
+    Set<Id> accountIds = new Set<Id>();
+    List<Account> accountsToUpdate = new List<Account>();
+    
+    // Collect Account IDs from Contacts
+    for (Contact c : Trigger.new) {
+        accountIds.add(c.AccountId);
+    }
+    
+    // Query for Accounts and their related Contacts
+    Map<Id, Integer> accountContactCounts = new Map<Id, Integer>();
+    for (AggregateResult ar : [SELECT AccountId, COUNT(Id) cnt FROM Contact WHERE AccountId IN :accountIds GROUP BY AccountId]) {
+        accountContactCounts.put((Id)ar.get('AccountId'), (Integer)ar.get('cnt'));
+    }
+    
+    // Update the Number_of_Contacts__c field on Accounts
+    for (Id accountId : accountIds) {
+        if (accountContactCounts.containsKey(accountId)) {
+            accountsToUpdate.add(new Account(Id = accountId, Number_of_Contacts__c = accountContactCounts.get(accountId)));
+        } else {
+            accountsToUpdate.add(new Account(Id = accountId, Number_of_Contacts__c = 0));
+        }
+    }
+    
+    update accountsToUpdate;
+}
