@@ -1,4 +1,4 @@
-public class HttpCalloutExample {
+public class HttpCallout {
     
     public static void makeHttpCallout() {
         HttpRequest request = new HttpRequest();
