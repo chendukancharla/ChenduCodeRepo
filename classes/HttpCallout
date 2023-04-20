@@ -15,5 +15,4 @@ public class HttpCallout {
             System.debug('HTTP callout failed with status code: ' + response.getStatusCode() + ' and status message: ' + response.getStatus());
         }
     }
-    
-}
+} 
